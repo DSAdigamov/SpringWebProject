@@ -17,10 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -36,12 +33,15 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             //String authorizationHeader = request.getHeader(AUTHORIZATION);
-            String authorizationHeader ="Bearer " + stream(request.getCookies()).filter(x -> x.getName().equals("Authorization")).collect(Collectors.toList()).get(0).getValue();
-            log.info("token used: "+ authorizationHeader + "////////////////////////////////////");
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            String authorizationCookie ="";
+            if (request.getCookies() != null){
+                authorizationCookie ="Bearer " + stream(request.getCookies()).filter(x -> x.getName().equals("Authorization")).collect(Collectors.toList()).get(0).getValue();
+            }
+
+            if (authorizationCookie.startsWith("Bearer ")){
                 try {
                     log.info("token used in if: //////////////////////////////////////////////////");
-                    String token = authorizationHeader.substring("Bearer ".length());
+                    String token = authorizationCookie.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
