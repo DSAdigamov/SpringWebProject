@@ -1,7 +1,14 @@
 package com.test.webproject1.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -19,15 +26,6 @@ public class Address {
 
     @Column(name = "\"fullAddress\"", length = 100)
     private String fullAddress;
-
-    public Address() {
-    }
-
-    public Address(Post post, String city, String fullAddress) {
-        this.post = post;
-        this.city = city;
-        this.fullAddress = fullAddress;
-    }
 
     public Post getPost() {
         return post;

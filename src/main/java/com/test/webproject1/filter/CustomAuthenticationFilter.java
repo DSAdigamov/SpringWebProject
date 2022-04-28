@@ -80,5 +80,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.addCookie(cookieAccess);
         response.addCookie(cookieRefresh);
 
+        response.sendRedirect("/user/home");
+
     }
 }

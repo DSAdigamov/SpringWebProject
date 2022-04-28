@@ -1,5 +1,6 @@
 package com.test.webproject1.controllers;
 
+import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.servises.UserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @AllArgsConstructor
 @Controller
@@ -17,10 +20,16 @@ public class LogRegController {
 
     private UserServiceImpl userService;
 
+    private CookiesHelper cookiesHelper;
+
     @GetMapping("/login")
-    public String getLoginPage(Model model){
-        model.addAttribute("loginRequest", new User());
-        return "mainPage/login";
+    public String getLoginPage(Model model, HttpServletRequest request){
+        if (cookiesHelper.getAuthCookie(request) != null){
+            return "redirect:user/home";
+        }else {
+            model.addAttribute("loginRequest", new User());
+            return "mainPage/login";
+        }
     }
 
 //    @PostMapping("/login")

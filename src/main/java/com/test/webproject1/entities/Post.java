@@ -1,8 +1,13 @@
 package com.test.webproject1.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Data @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -26,10 +31,6 @@ public class Post {
 
     @OneToOne(mappedBy = "post", orphanRemoval = true)
     private Address address;
-
-    public Post() {
-
-    }
 
     public Integer getId() {
         return id;

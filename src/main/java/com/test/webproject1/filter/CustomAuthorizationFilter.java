@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.webproject1.helpers.CookiesHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,33 +15,34 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    private CookiesHelper cookiesHelper = new CookiesHelper();
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().equals("/login") || request.getServletPath().equals("/api/token/refresh")){
             filterChain.doFilter(request, response);
         } else {
-            //String authorizationHeader = request.getHeader(AUTHORIZATION);
             String authorizationCookie ="";
-            if (request.getCookies() != null){
-                authorizationCookie ="Bearer " + stream(request.getCookies()).filter(x -> x.getName().equals("Authorization")).collect(Collectors.toList()).get(0).getValue();
+            Cookie authCookie = cookiesHelper.getAuthCookie(request);
+            if (authCookie != null){
+                authorizationCookie ="Bearer " + authCookie.getValue();
             }
 
             if (authorizationCookie.startsWith("Bearer ")){
                 try {
-                    log.info("token used in if: //////////////////////////////////////////////////");
                     String token = authorizationCookie.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();

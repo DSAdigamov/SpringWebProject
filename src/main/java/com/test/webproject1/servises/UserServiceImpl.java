@@ -1,7 +1,13 @@
 package com.test.webproject1.servises;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
 import com.test.webproject1.entities.User;
+import com.test.webproject1.helpers.DecodeHelper;
 import com.test.webproject1.repositories.RoleRepository;
 import com.test.webproject1.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +19,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +36,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CookiesHelper cookiesHelper;
+    private final DecodeHelper decodeHelper;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -57,10 +69,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByEmailAndPassword(login, passwordEncoder.encode(password)).orElse(null);
     }
 
+
     public User saveUser(User user) {
         log.info("Saving new user");
-        if (user.getEmail() != "" && user.getPassword() != "" && user.getName() != "" && userRepository.findByEmail(user.getEmail()) == null){
+        if (!user.getEmail().equals("") && !user.getPassword().equals("") && !user.getName().equals("") && userRepository.findByEmail(user.getEmail()) == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setDateOfRegistration(LocalDate.now());
+            user.setActive(false);
             return userRepository.save(user);
         }
         log.info("wrong data");
@@ -92,6 +107,32 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getUsers() {
         log.info("getting all users");
         return userRepository.findAll();
+    }
+
+    public User getUserWithCookie(HttpServletRequest request){
+        Cookie authCookie = cookiesHelper.getAuthCookie(request);
+        if (authCookie != null){
+            String token = authCookie.getValue();
+            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT decodedJWT = verifier.verify(token);
+            String email = decodedJWT.getSubject();
+            return userRepository.findByEmail(email);
+        } else
+            return null;
+    }
+
+    public void UpdateUserNameAndPhone(HttpServletRequest request,String name, String phone){
+        Cookie authCookie = cookiesHelper.getAuthCookie(request);
+        String userEmail = decodeHelper.getEmailFromAuthCookie(authCookie.getValue());
+
+        if (!name.equals("")){
+            userRepository.setUserName(userEmail, name);
+        }
+
+        if (!phone.equals("")){
+            userRepository.setUserPhone(userEmail, phone);
+        }
     }
 
 }

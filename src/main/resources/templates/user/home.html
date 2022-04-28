@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<link rel="stylesheet" href="../css/style.css">
+<div class="main-page">
+    <div class="form">
+        <form class="login-form" method="get" action="/user/home/change" th:object="${homePageRequest}">
+            <h3>Страница пользователя</h3>
+            <p><strong>Id: </strong><a th:text="${homePageRequest.getId()}"></a></p>
+            <p><strong>Email: </strong><a th:text="${homePageRequest.getEmail()}"></a></p>
+            <p><strong>Name: </strong><a th:text="${homePageRequest.getName()}"></a></p>
+            <p><strong>Phone Number: </strong><a th:text="${homePageRequest.getPhoneNumber()}"></a></p>
+            <p><strong>Date of Registration: </strong><a th:text="${homePageRequest.getDateOfRegistration()}"></a></p>
+            <p><strong>Account activated: </strong><a th:text="${homePageRequest.getActive()}"></a></p>
+            <button type="submit">Изменить данные</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
