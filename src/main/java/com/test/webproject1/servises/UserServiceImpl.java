@@ -135,4 +135,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
+    public void deleteUserByEmail(String email){
+        userRepository.deleteUserByEmail(email);
+    }
+
 }
