@@ -15,11 +15,14 @@ import static java.util.Arrays.stream;
 public class CookiesHelper {
 
     public Cookie getAuthCookie(HttpServletRequest request){
-        List<Cookie> authcookieList = stream(request.getCookies()).filter(x -> x.getName().equals("Authorization")).collect(Collectors.toList());
-        if (authcookieList.size() != 0){
-            return authcookieList.get(0);
-        } else
-            return null;
+        Cookie authCookie = null;
+        if (request.getCookies() != null){
+            List<Cookie> authcookieList = stream(request.getCookies()).filter(x -> x.getName().equals("Authorization")).collect(Collectors.toList());
+            if (authcookieList.size() != 0){
+                authCookie = authcookieList.get(0);
+            }
+        }
+        return authCookie;
     }
 
 
