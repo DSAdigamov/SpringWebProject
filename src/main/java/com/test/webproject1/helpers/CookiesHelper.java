@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,5 +20,20 @@ public class CookiesHelper {
             return authcookieList.get(0);
         } else
             return null;
+    }
+
+
+    public void DeleteAuthCookies(HttpServletResponse response){
+        Cookie cookieAccess = new Cookie("Authorization",null);
+        Cookie cookieRefresh = new Cookie("refresh_token", null);
+        cookieAccess.setPath("/");
+        cookieRefresh.setPath("/");
+        cookieAccess.setHttpOnly(true);
+        cookieRefresh.setHttpOnly(true);
+        cookieAccess.setMaxAge(0);
+        cookieRefresh.setMaxAge(0);
+
+        response.addCookie(cookieAccess);
+        response.addCookie(cookieRefresh);
     }
 }

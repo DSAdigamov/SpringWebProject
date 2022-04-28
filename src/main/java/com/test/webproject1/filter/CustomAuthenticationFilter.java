@@ -58,7 +58,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
                 //timeForToken(10 min)
-                .withExpiresAt(new Date(System.currentTimeMillis() +3600 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +1800 * 60 * 1000))
                 .withIssuer(request.getRequestURI().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
@@ -69,7 +69,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        tokens.put("refresh_token", refresh_token);
 //        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        //
+
         Cookie cookieAccess = new Cookie("Authorization",access_token);
         Cookie cookieRefresh = new Cookie("refresh_token", refresh_token);
         cookieAccess.setHttpOnly(true);
@@ -77,6 +77,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         cookieRefresh.setHttpOnly(true);
         cookieRefresh.setSecure(true);
         cookieAccess.setPath("/");
+        cookieRefresh.setPath("/");
         response.addCookie(cookieAccess);
         response.addCookie(cookieRefresh);
 

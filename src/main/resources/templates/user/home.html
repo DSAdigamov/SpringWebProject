@@ -18,6 +18,9 @@
             <p><strong>Account activated: </strong><a th:text="${homePageRequest.getActive()}"></a></p>
             <button type="submit">Изменить данные</button>
         </form>
+        <form class="login-form" method="post" action="/user/home/logout">
+            <button type="submit">Logout</button>
+        </form>
     </div>
 </div>
 </body>
