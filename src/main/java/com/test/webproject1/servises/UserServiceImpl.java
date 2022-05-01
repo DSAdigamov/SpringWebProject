@@ -4,10 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.test.webproject1.entities.Picture;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.DecodeHelper;
+import com.test.webproject1.repositories.PictureRepository;
 import com.test.webproject1.repositories.RoleRepository;
 import com.test.webproject1.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private final PictureRepository pictureRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User getUserWithCookie(HttpServletRequest request){
+    public User getUserWithRequest(HttpServletRequest request){
         Cookie authCookie = cookiesHelper.getAuthCookie(request);
         if (authCookie != null){
             String token = authCookie.getValue();
@@ -137,6 +140,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public void deleteUserByEmail(String email){
         userRepository.deleteUserByEmail(email);
+    }
+
+    public void saveUserPicture(HttpServletRequest request, String path){
+        User user = getUserWithRequest(request);
+        Picture pic = new Picture();
+        pic.setUser(user);
+        pic.setPath(path);
+        pictureRepository.save(pic);
     }
 
 }

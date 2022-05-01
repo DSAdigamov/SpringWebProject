@@ -14,6 +14,8 @@ import static java.util.Arrays.stream;
 @Component
 public class CookiesHelper {
 
+    DecodeHelper decodeHelper;
+
     public Cookie getAuthCookie(HttpServletRequest request){
         Cookie authCookie = null;
         if (request.getCookies() != null){
@@ -38,5 +40,17 @@ public class CookiesHelper {
 
         response.addCookie(cookieAccess);
         response.addCookie(cookieRefresh);
+    }
+
+    public String getEmailFromCookie(HttpServletRequest request){
+        Cookie authCookie = getAuthCookie(request);
+        String email = decodeHelper.getEmailFromAuthCookie(authCookie.getValue());
+        return email;
+    }
+
+    public String[] getRolesFromCookie(HttpServletRequest request){
+        Cookie authCookie = getAuthCookie(request);
+        String[] roles = decodeHelper.getRolesFromAuthCookie(authCookie.getValue());
+        return roles;
     }
 }

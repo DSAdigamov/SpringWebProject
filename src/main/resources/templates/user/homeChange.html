@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="../../css/style.css">
 <div class="main-page">
     <div class="form">
-        <form class="login-form" method="post" action="/user/home/change" th:object="${homeChangePageRequest}">
+        <form class="login-form" method="post" action="/user/home/change" th:object="${homeChangePageRequest}" enctype="multipart/form-data">
             <h3>Страница пользователя</h3>
+            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" />
             <p><strong>Id: </strong><a th:text="${homeChangePageRequest.getId()}"></a></p>
             <p><strong>Email: </strong><a th:text="${homeChangePageRequest.getEmail()}"></a></p>
             <p><strong>Name: </strong><input type="text" name="name"  th:placeholder="${homeChangePageRequest.getName()}"></input></p>
