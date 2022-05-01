@@ -9,6 +9,7 @@ import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.DecodeHelper;
+import com.test.webproject1.helpers.FileUsageHelper;
 import com.test.webproject1.repositories.PictureRepository;
 import com.test.webproject1.repositories.RoleRepository;
 import com.test.webproject1.repositories.UserRepository;
@@ -38,9 +39,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PictureRepository pictureRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final CookiesHelper cookiesHelper;
     private final DecodeHelper decodeHelper;
+    private final FileUsageHelper fileUsageHelper;
+
+
 
 
     @Override
@@ -142,12 +147,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.deleteUserByEmail(email);
     }
 
-    public void saveUserPicture(HttpServletRequest request, String path){
-        User user = getUserWithRequest(request);
-        Picture pic = new Picture();
-        pic.setUser(user);
-        pic.setPath(path);
-        pictureRepository.save(pic);
-    }
+
+
 
 }

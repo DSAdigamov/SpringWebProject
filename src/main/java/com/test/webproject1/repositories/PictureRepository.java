@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PictureRepository extends JpaRepository<Picture, Long> {
-
-
+    Picture findByUserEmail(String email);
 }

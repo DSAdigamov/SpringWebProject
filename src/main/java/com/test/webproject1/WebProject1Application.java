@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.file.Paths;
+
 @SpringBootApplication
 public class WebProject1Application {
 
@@ -31,10 +33,10 @@ public class WebProject1Application {
         userService.saveRole(new Role(null, "ROLE_ADMIN"));
         userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
-        //userService.saveUser(new User(null, "111@mail.ru", "петя", "1234"));
-        userService.saveUser(new User(null, "222@mail.ru", "Боб>", "2341"));
-        userService.saveUser(new User(null, "333@mail.ru", "Ваня", "3412"));
-        userService.saveUser(new User(null, "444@mail.ru", "Вова", "4123"));
+        userService.saveUser(new User(null, "111@mail.ru",  "1234", "петя"));
+        userService.saveUser(new User(null, "222@mail.ru", "2341" , "Боб"));
+        userService.saveUser(new User(null, "333@mail.ru", "3412" , "Ваня"));
+        userService.saveUser(new User(null, "444@mail.ru", "4123" , "Вова"));
 
 //        userService.addRoleToUser("111@mail.ru", "ROLE_USER");
 //        userService.addRoleToUser("111@mail.ru", "ROLE_ADMIN");

@@ -2,13 +2,13 @@ package com.test.webproject1.controllers;
 
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
-import com.test.webproject1.helpers.FileUploadHelper;
+import com.test.webproject1.helpers.FileUsageHelper;
+import com.test.webproject1.servises.PictureService;
 import com.test.webproject1.servises.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +24,9 @@ public class    UserPageController {
 
     private UserServiceImpl userService;
     private CookiesHelper cookiesHelper;
-    FileUploadHelper fileUploadHelper;
+    private FileUsageHelper fileUploadService;
+    private PictureService pictureService;
+
 
 
     @GetMapping("/home")
@@ -44,11 +46,10 @@ public class    UserPageController {
     @PostMapping("/home/change")
     public String changeUserData(@ModelAttribute User userModel, @RequestParam("image") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         userService.UpdateUserNameAndPhone(request, userModel.getName(), userModel.getPhoneNumber());
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        String uploadDir = "../../images/userProfileImages/";
-        fileUploadHelper.saveFile(uploadDir, fileName, multipartFile);
-        userService.saveUserPicture(request, uploadDir + fileName);
-
+        if (!multipartFile.isEmpty()){
+            pictureService.saveUserPicture(request, userService.getUserWithRequest(request).getId() + "_" + multipartFile.getOriginalFilename());
+            fileUploadService.saveLocalPictureToImagesProfiles(userService.getUserWithRequest(request).getId() ,multipartFile);
+        }
         return "redirect:/user/home";
     }
 
