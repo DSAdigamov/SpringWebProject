@@ -1,5 +1,6 @@
 package com.test.webproject1.controllers;
 
+import com.test.webproject1.entities.Picture;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.helpers.FileUsageHelper;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -32,6 +34,7 @@ public class    UserPageController {
     @GetMapping("/home")
     public String getUserPage(Model model, HttpServletRequest request){
         User user = userService.getUserWithRequest(request);
+        model.addAttribute("image", pictureService.getLoggedUserImageFile(request));
         model.addAttribute("homePageRequest", user);
         return "/user/home";
     }

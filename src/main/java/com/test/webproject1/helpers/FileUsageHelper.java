@@ -30,4 +30,9 @@ public class FileUsageHelper {
         File file = new File(uploadFolderPath + fileName);
         file.delete();
     }
+
+    public File getProfileImage(String imageName){
+        File image = new File(uploadFolderPath + imageName);
+        return image;
+    }
 }
