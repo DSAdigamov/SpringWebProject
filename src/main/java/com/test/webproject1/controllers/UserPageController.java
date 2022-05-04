@@ -1,5 +1,6 @@
 package com.test.webproject1.controllers;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.test.webproject1.entities.Picture;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
@@ -34,7 +35,7 @@ public class    UserPageController {
     @GetMapping("/home")
     public String getUserPage(Model model, HttpServletRequest request){
         User user = userService.getUserWithRequest(request);
-        model.addAttribute("image", pictureService.getLoggedUserImageFile(request));
+        model.addAttribute("imagePath", pictureService.getLoggedUserImagePathWithRequest(request));
         model.addAttribute("homePageRequest", user);
         return "/user/home";
     }
@@ -47,7 +48,7 @@ public class    UserPageController {
     }
 
     @PostMapping("/home/change")
-    public String changeUserData(@ModelAttribute User userModel, @RequestParam("image") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+    public String changeUserData(@ModelAttribute User userModel, @RequestParam("image") MultipartFile multipartFile, HttpServletRequest request) throws IOException, InterruptedException {
         userService.UpdateUserNameAndPhone(request, userModel.getName(), userModel.getPhoneNumber());
         if (!multipartFile.isEmpty()){
             pictureService.saveUserPicture(request, userService.getUserWithRequest(request).getId() + "_" + multipartFile.getOriginalFilename());

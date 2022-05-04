@@ -10,7 +10,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 
 @SpringBootApplication
@@ -38,12 +46,14 @@ public class WebProject1Application {
         userService.saveUser(new User(null, "333@mail.ru", "3412" , "Ваня"));
         userService.saveUser(new User(null, "444@mail.ru", "4123" , "Вова"));
 
-//        userService.addRoleToUser("111@mail.ru", "ROLE_USER");
-//        userService.addRoleToUser("111@mail.ru", "ROLE_ADMIN");
-//        userService.addRoleToUser("222@mail.ru", "ROLE_USER");
-//        userService.addRoleToUser("444@mail.ru", "ROLE_USER");
+        userService.addRoleToUser("111@mail.ru", "ROLE_USER");
+        userService.addRoleToUser("111@mail.ru", "ROLE_ADMIN");
+        userService.addRoleToUser("222@mail.ru", "ROLE_USER");
+        userService.addRoleToUser("444@mail.ru", "ROLE_USER");
 //
 
         };
     }
+
+
 }

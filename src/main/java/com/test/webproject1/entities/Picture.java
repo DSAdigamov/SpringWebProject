@@ -25,8 +25,8 @@ public class Picture {
     @ManyToOne
     private Post post;
 
-    @Column(name = "path", length = 100)
-    private String path;
+    @Column(name = "picture_name", length = 100)
+    private String picture_name;
 
     public Integer getId() {
         return id;
@@ -36,12 +36,12 @@ public class Picture {
         this.id = id;
     }
 
-    public String getPath() {
-        return path;
+    public String getPicture_name() {
+        return picture_name;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPicture_name(String path) {
+        this.picture_name = path;
     }
 
 }

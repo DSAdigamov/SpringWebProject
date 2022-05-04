@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 
 @RequiredArgsConstructor
 @Service
@@ -26,20 +25,25 @@ public class PictureService {
 
         Picture pic = new Picture();
         pic.setUser(user);
-        pic.setPath(fileName);
+        pic.setPicture_name(fileName);
 
         Picture oldPicture = pictureRepository.findByUserEmail(user.getEmail());
         if (oldPicture != null){
-            fileUsageHelper.deleteLocalImageFromProfiles(oldPicture.getPath());
+            fileUsageHelper.deleteLocalImageFromProfiles(oldPicture.getPicture_name());
             pictureRepository.delete(oldPicture);
         }
         pictureRepository.save(pic);
     }
 
-    public File getLoggedUserImageFile(HttpServletRequest request){
-        Picture picture = pictureRepository.findByUserEmail(userService.getUserWithRequest(request).getEmail());
-        File file = new File(fileUsageHelper.getUploadFolderPath() + picture.getPath());
-        return file;
+    public String getLoggedUserImagePathWithRequest(HttpServletRequest request){
+        Picture userProfilePicture = pictureRepository.findByUserEmail(userService.getUserWithRequest(request).getEmail());
+
+        if (userProfilePicture != null){
+            return "/images/profiles/" + userProfilePicture.getPicture_name();
+        } else
+            return "/nullUserImage.png";
     }
+
+
 
 }

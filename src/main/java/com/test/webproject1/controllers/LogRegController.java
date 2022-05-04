@@ -48,9 +48,13 @@ public class LogRegController {
 //    }
 
     @GetMapping("/register")
-    public String getRegisterPage(Model model){
-        model.addAttribute("registerRequest", new User());
-        return "mainPage/registration";
+    public String getRegisterPage(Model model, HttpServletRequest request){
+        if (cookiesHelper.getAuthCookie(request) != null) {
+            return "redirect:user/home";
+        } else {
+            model.addAttribute("registerRequest", new User());
+            return "mainPage/registration";
+        }
     }
 
     @PostMapping("/register")
