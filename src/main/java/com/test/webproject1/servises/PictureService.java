@@ -44,6 +44,14 @@ public class PictureService {
             return "/nullUserImage.png";
     }
 
+    public String getLoggedUserImagePathWithRequestForSidebar(HttpServletRequest request){
+        Picture userProfilePicture = pictureRepository.findByUserEmail(userService.getUserWithRequest(request).getEmail());
+        if (userProfilePicture != null){
+            return "/images/profiles/" + userProfilePicture.getPicture_name();
+        } else
+            return "/nullUserImage.png";
+    }
+
 
 
 }

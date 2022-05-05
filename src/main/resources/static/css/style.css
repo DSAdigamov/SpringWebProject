@@ -5,6 +5,22 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
+.inline {
+  display: inline;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: ffffff;
+  cursor: pointer;
+  font-size: 20px;
+  width: 102%;
+  font-family: serif;
+  text-align: left;
+}
+
+
 .main-page {
   width: 360px;
   padding: 8% 0 0;
