@@ -39,7 +39,7 @@ public class PictureService {
         Picture userProfilePicture = pictureRepository.findByUserEmail(userService.getUserWithRequest(request).getEmail());
 
         if (userProfilePicture != null){
-            return "/images/profiles/" + userProfilePicture.getPicture_name();
+            return "../../../../images/profiles/" + userProfilePicture.getPicture_name();
         } else
             return "/nullUserImage.png";
     }

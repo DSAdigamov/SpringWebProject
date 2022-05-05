@@ -24,14 +24,14 @@ public class FileUsageHelper {
 
     public void saveLocalPictureToImagesProfiles(Long user_id,MultipartFile multipartFile) throws IOException {
         String filename = multipartFile.getOriginalFilename();
-        String fileNameWithId = user_id + "_" + filename;
-        String fullPath = uploadFolderPath + fileNameWithId;
-
 
         BufferedImage croppedImage = cropImageMax240To320(multipartFile);
         Optional<String> ext = Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+
+        String newFileNameWithId = user_id + "." + ext.get() ;
+        String fullPath = uploadFolderPath + newFileNameWithId;
 
 
         File outputFile = new File(fullPath);
@@ -61,15 +61,15 @@ public class FileUsageHelper {
         } else {
             if (height > 320 && width <=240){
                 int centeredUpperLeftCornerYThenWidthNormal = (height - 320)/2;
-                BufferedImage croppedImage = originalImage.getSubimage(width,
-                        centeredUpperLeftCornerYThenWidthNormal, 240, 320);
+                BufferedImage croppedImage = originalImage.getSubimage(0,
+                        centeredUpperLeftCornerYThenWidthNormal, width, 320);
                 return croppedImage;
             }
 
             if (height <=320 && width > 240){
                 int centeredUpperLeftCornerXThenHeightNormal = (width - 240)/2;
-                BufferedImage croppedImage = originalImage.getSubimage(width,
-                        centeredUpperLeftCornerXThenHeightNormal, 240, 320);
+                BufferedImage croppedImage = originalImage.getSubimage(centeredUpperLeftCornerXThenHeightNormal,
+                        0, 240, height);
                 return croppedImage;
             }
 

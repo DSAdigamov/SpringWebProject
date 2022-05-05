@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -51,7 +52,11 @@ public class    UserPageController {
     public String changeUserData(@ModelAttribute User userModel, @RequestParam("image") MultipartFile multipartFile, HttpServletRequest request) throws IOException, InterruptedException {
         userService.UpdateUserNameAndPhone(request, userModel.getName(), userModel.getPhoneNumber());
         if (!multipartFile.isEmpty()){
-            pictureService.saveUserPicture(request, userService.getUserWithRequest(request).getId() + "_" + multipartFile.getOriginalFilename());
+            Optional<String> ext = Optional.ofNullable(multipartFile.getOriginalFilename())
+                    .filter(f -> f.contains("."))
+                    .map(f -> f.substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1));
+
+            pictureService.saveUserPicture(request, userService.getUserWithRequest(request).getId() + "." + ext.get());
             fileUploadService.saveLocalPictureToImagesProfiles(userService.getUserWithRequest(request).getId() ,multipartFile);
         }
         return "redirect:/user/home";
