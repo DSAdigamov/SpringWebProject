@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.test.webproject1.entities.Picture;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
 import com.test.webproject1.entities.User;
@@ -29,6 +28,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
 
     public User registerUser(User user){
         User returnUser = saveUser(user);
@@ -109,6 +110,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getUser(String email) {
         log.info("getting user with email: {}", email );
         return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> getUserById(Long id){
+        return userRepository.findById(id);
     }
 
     @Override

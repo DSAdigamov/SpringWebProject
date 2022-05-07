@@ -56,20 +56,14 @@
       <div id="content" class="p-4 p-md-5 pt-5">
           <div class="main-page">
               <div class="form">
-                  <form class="login-form" method="get" action="/user/home/change" th:object="${LoggedUser}">
                       <h3>Страница пользователя</h3>
                       <img th:src="${imagePath}" />
-                      <p><strong>Id: </strong><a th:text="${LoggedUser.getId()}"></a></p>
-                      <p><strong>Email: </strong><a th:text="${LoggedUser.getEmail()}"></a></p>
-                      <p><strong>Name: </strong><a th:text="${LoggedUser.getName()}"></a></p>
-                      <p><strong>Phone Number: </strong><a th:text="${LoggedUser.getPhoneNumber()}"></a></p>
-                      <p><strong>Date of Registration: </strong><a th:text="${LoggedUser.getDateOfRegistration()}"></a></p>
-                      <p><strong>Account activated: </strong><a th:text="${LoggedUser.getActive()}"></a></p>
-                      <button type="submit">Изменить данные</button>
-                  </form>
-                  <form class="login-form" method="post" action="/user/logout">
-                      <button type="submit">Sing out</button>
-                  </form>
+                      <p><strong>Id: </strong><a th:text="${searchedUser.getId()}"></a></p>
+                      <p><strong>Email: </strong><a th:text="${searchedUser.getEmail()}"></a></p>
+                      <p><strong>Name: </strong><a th:text="${searchedUser.getName()}"></a></p>
+                      <p><strong>Phone Number: </strong><a th:text="${searchedUser.getPhoneNumber()}"></a></p>
+                      <p><strong>Date of Registration: </strong><a th:text="${searchedUser.getDateOfRegistration()}"></a></p>
+                      <p><strong>Account activated: </strong><a th:text="${searchedUser.getActive()}"></a></p>
               </div>
           </div>
       </div>

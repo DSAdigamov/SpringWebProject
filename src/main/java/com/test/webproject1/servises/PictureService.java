@@ -52,6 +52,14 @@ public class PictureService {
             return "/nullUserImage.png";
     }
 
+    public String getUserImagePathById(Long id){
+        Picture userProfilePicture = pictureRepository.findByUserEmail(userService.getUserById(id).get().getEmail());
+
+        if (userProfilePicture != null){
+            return "../../../../images/profiles/" + userProfilePicture.getPicture_name();
+        } else
+            return "/nullUserImage.png";
+    }
 
 
 }
