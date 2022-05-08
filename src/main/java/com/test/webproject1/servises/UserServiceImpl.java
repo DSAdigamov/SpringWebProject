@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.test.webproject1.DAO.UserDAO;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
 import com.test.webproject1.entities.User;
@@ -36,14 +37,14 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final PictureRepository pictureRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    private final PictureService pictureService;
 
     private final PasswordEncoder passwordEncoder;
     private final CookiesHelper cookiesHelper;
     private final DecodeHelper decodeHelper;
-    private final FileUsageHelper fileUsageHelper;
 
 
 
@@ -120,6 +121,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getUsers() {
         log.info("getting all users");
         return userRepository.findAll();
+    }
+
+    public List<UserDAO> getAllUsersDAO() {
+        log.info("getting all users");
+        List<User> users = userRepository.findAll();
+        List<UserDAO> userDAOList = null;
+        for (int i = 0; i < users.size(); i++) {
+            userDAOList.add(new UserDAO(users.get(i).getId(), users.get(i).getEmail(), users.get(i).getName(),
+                    users.get(i).getPhoneNumber(), users.get(i).getDateOfRegistration(), pictureService.getUserImagePathById(users.get(i).getId())));
+        }
+        return userDAOList;
     }
 
     public User getUserWithRequest(HttpServletRequest request){
