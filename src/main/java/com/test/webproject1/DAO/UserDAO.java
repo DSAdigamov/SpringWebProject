@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
-@Component
 public class UserDAO {
     private Long id;
     private String email;

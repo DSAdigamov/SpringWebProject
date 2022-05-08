@@ -35,9 +35,10 @@ public class UserPageController {
         User user = userService.getUserWithRequest(request);
         model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
         model.addAttribute("LoggedUser", user);
-        model.addAttribute("allUsersDAOList", userService.getAllUsersDAO());
+        //model.addAttribute("allUsersDAOList", userService.getAllUsersDAO());
         return "/user/allUsers";
     }
+
 
     @GetMapping("/{id}")
     public String getUserPageById(@PathVariable String id, Model model, HttpServletRequest request){

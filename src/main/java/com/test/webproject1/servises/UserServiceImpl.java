@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-    private final PictureService pictureService;
+    private final PictureRepository pictureRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final CookiesHelper cookiesHelper;
@@ -123,16 +122,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    public List<UserDAO> getAllUsersDAO() {
-        log.info("getting all users");
-        List<User> users = userRepository.findAll();
-        List<UserDAO> userDAOList = null;
-        for (int i = 0; i < users.size(); i++) {
-            userDAOList.add(new UserDAO(users.get(i).getId(), users.get(i).getEmail(), users.get(i).getName(),
-                    users.get(i).getPhoneNumber(), users.get(i).getDateOfRegistration(), pictureService.getUserImagePathById(users.get(i).getId())));
-        }
-        return userDAOList;
-    }
+//    public List<UserDAO> getAllUsersDAO() {
+//        log.info("getting all users");
+//        List<User> users = userRepository.findAll();
+//        List<UserDAO> userDAOList = null;
+//        for (int i = 0; i < users.size(); i++) {
+//            userDAOList.add(new UserDAO(users.get(i).getId(), users.get(i).getEmail(), users.get(i).getName(),
+//                    users.get(i).getPhoneNumber(), users.get(i).getDateOfRegistration(), pictureRepository.getUserImagePathById(users.get(i).getId())));
+//        }
+//        return userDAOList;
+//    }
 
     public User getUserWithRequest(HttpServletRequest request){
         Cookie authCookie = cookiesHelper.getAuthCookie(request);
