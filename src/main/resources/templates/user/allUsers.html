@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Home</title>
+    <title>Users</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -56,16 +56,12 @@
     <div id="content" class="p-4 p-md-5 pt-5">
         <div class="main-page">
             <div class="form" th:each="user : ${allUsersDAOList}">
-                <tr>
-                    <td>
                         <img th:src="${user.getImagePath()}" />
                         <p><strong>Id: </strong><a th:text="${user.getId()}"></a></p>
                         <p><strong>Email: </strong><a th:text="${user.getEmail()}"></a></p>
                         <p><strong>Name: </strong><a th:text="${user.getName()}"></a></p>
                         <p><strong>Phone Number: </strong><a th:text="${user.getPhoneNumber()}"></a></p>
                         <p><strong>Date of Registration: </strong><a th:text="${user.getDateOfRegistration()}"></a></p>
-                    </td>
-                </tr>
             </div>
         </div>
     </div>
@@ -73,9 +69,9 @@
 
 </div>
 
-<script type="text/javascript" th:src="@{../js/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{../js/popper.js}"></script>
-<script type="text/javascript" th:src="@{../js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{../js/main.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
 </body>
 </html>

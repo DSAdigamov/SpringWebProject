@@ -1,5 +1,6 @@
 package com.test.webproject1.controllers;
 
+import com.test.webproject1.DAO.UserDAO;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.helpers.FileUsageHelper;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +32,12 @@ public class UserPageController {
 
     private CookiesHelper cookiesHelper;
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public String getAllUsersPage(Model model, HttpServletRequest request){
         User user = userService.getUserWithRequest(request);
         model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
         model.addAttribute("LoggedUser", user);
-        //model.addAttribute("allUsersDAOList", userService.getAllUsersDAO());
+        model.addAttribute("allUsersDAOList", userService.getAllUsersDAO());
         return "/user/allUsers";
     }
 
