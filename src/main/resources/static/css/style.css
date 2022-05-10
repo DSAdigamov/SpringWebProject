@@ -7,16 +7,16 @@
 
 .inline {
   display: inline;
+  position: relative;
+  right: 2%;
 }
 
 .link-button {
   background: none;
   border: none;
-  color: ffffff;
   cursor: pointer;
-  font-size: 20px;
-  width: 102%;
-  font-family: serif;
+  font-size: 16px;
+  width: 104%;
   text-align: left;
 }
 

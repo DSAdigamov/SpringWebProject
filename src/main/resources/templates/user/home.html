@@ -24,25 +24,14 @@
                         <h2 th:text="${LoggedUser.getName()}" style="color: white"></h2>
                     </div>
                 </div>
+
         <ul class="list-unstyled components mb-5">
           <li class="active">
-            <a href="/user/home"></span> Home</a>
+            <a href="/user/home"></span>Home</a>
           </li>
-          <li>
-              <a href="#"></span> Download</a>
-          </li>
-          <li>
-            <a href="#"></span> Gift Code</a>
-          </li>
-          <li>
-            <a href="#"></span> Top Review</a>
-          </li>
-          <li>
-            <a href="#"></span> Settings</a>
-          </li>
-          <li>
-            <a href="#"></span> Support</a>
-          </li>
+            <li class="active">
+                <a href="/user/getAll"></span>All Users</a>
+            </li>
           <li>
               <form class="inline" method="post" action="/user/logout">
                   <button type="submit" class="link-button"><a style="color: #ffffff99" >Sing out</a></button>
