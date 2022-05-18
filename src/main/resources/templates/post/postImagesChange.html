@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Change</title>
+    <title>Images Change</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="custom-menu">
@@ -23,6 +24,7 @@
                 <h2 th:text="${LoggedUser.getName()}" style="color: white"></h2>
             </div>
         </div>
+
         <ul class="list-unstyled components mb-5">
             <li class="active">
                 <a href="/user/home"></span>Home</a>
@@ -41,29 +43,45 @@
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-        <div class="main-page">
-            <div class="form">
-                <form class="login-form" method="post" action="/user/home/change" th:object="${LoggedUser}" enctype="multipart/form-data">
-                    <h3>Home page</h3>
-                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" />
-                    <p><strong>Id: </strong><a th:text="${LoggedUser.getId()}"></a></p>
-                    <p><strong>Email: </strong><a th:text="${LoggedUser.getEmail()}"></a></p>
-                    <p><strong>Name: </strong><input type="text" name="name"  th:placeholder="${LoggedUser.getName()}"></p>
-                    <p><strong>Phone Number: </strong><input type="text" name="phoneNumber" th:placeholder="${LoggedUser.getPhoneNumber()}"></p>
-                    <p><strong>Date of Registration: </strong><a th:text="${LoggedUser.getDateOfRegistration()}"></a></p>
-                    <p><strong>Account activated: </strong><a th:text="${LoggedUser.getActive()}"></a></p>
-                    <button type="submit">Confirm</button>
-                </form>
+        <div class="service-wrap">
+            <div class="multiple-file-upload-wrap multiple-file-upload">
+                <!-- Already uploaded  -->
+                <div class="already-uploaded-files">
+                    <div class="aup-title">Already Uploaded: </div>
+                    <div class="aup-item forDelete" th:each="image : ${imagesList}">
+                        <img class="aup-file-name" style="width: 320px; height: 240px" th:src="${image.getPictureFullPath()}">
+                        <a th:href="@{${'/images/delete/' + image.getId()}}"><span class="aup-delete-btn mfuDeleteBtn" >Delete</span></a>
+                        <div class="aup-server-response server-response"></div>
+                        <div class="mfu-clear"></div>
+                    </div>
+                </div>
             </div>
+
+            <!------------->
+
+            <p></p>
+            <form method="post" th:action="${postAction}" enctype="multipart/form-data">
+                <p>Upload new Image:</p>
+                <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" />
+                <button class="mfu-new-item-btn btn btn-primary" type="submit" style="alignment: right">Upload</button>
+            </form>
+            <br>
+            <br>
+
+            <form method="get" action="/user/home">
+                <button type="submit" class="mfu-new-item-btn btn btn-primary">Back</button>
+            </form>
+            <br>
+            <br>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
+
 
 </body>
 </html>

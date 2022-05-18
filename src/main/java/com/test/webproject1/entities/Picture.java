@@ -25,7 +25,7 @@ public class Picture {
     @ManyToOne
     private Post post;
 
-    @Column(name = "picture_name", length = 100)
+    @Column(name = "picture_name")
     private String picture_name;
 
     public Integer getId() {
@@ -44,4 +44,8 @@ public class Picture {
         this.picture_name = path;
     }
 
+    public Picture(Post post, String picture_name) {
+        this.post = post;
+        this.picture_name = picture_name;
+    }
 }

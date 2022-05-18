@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.test.webproject1.DAO.UserDAO;
+import com.test.webproject1.DTO.UserDTO;
 import com.test.webproject1.entities.Picture;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.entities.Role;
@@ -122,10 +122,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    public ArrayList<UserDAO> getAllUsersDAO() {
+    public ArrayList<UserDTO> getAllUsersDAO() {
         log.info("getting all users");
         List<User> users = userRepository.findAll();
-        ArrayList<UserDAO> userDAOList = new ArrayList<>();
+        ArrayList<UserDTO> userDTOList = new ArrayList<>();
 
         String imageName;
 
@@ -136,10 +136,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 imageName = "../../../../images/profiles/" + userProfilePicture.getPicture_name();
             } else
                 imageName = "/nullUserImage.png";
-            userDAOList.add(new UserDAO(users.get(i).getId(), users.get(i).getEmail(), users.get(i).getName(), users.get(i).getPhoneNumber(), users.get(i).getDateOfRegistration(), imageName));
+            userDTOList.add(new UserDTO(users.get(i).getId(), users.get(i).getEmail(), users.get(i).getName(), users.get(i).getPhoneNumber(), users.get(i).getDateOfRegistration(), imageName));
         }
 
-        return userDAOList;
+        return userDTOList;
     }
 
     public User getUserWithRequest(HttpServletRequest request){

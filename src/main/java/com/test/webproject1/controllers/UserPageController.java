@@ -1,6 +1,5 @@
 package com.test.webproject1.controllers;
 
-import com.test.webproject1.DAO.UserDAO;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.helpers.FileUsageHelper;
@@ -66,8 +65,8 @@ public class UserPageController {
         } else {
             User user = userService.getUserWithRequest(request);
             model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
-            model.addAttribute("imagePath", pictureService.getLoggedUserImagePathWithRequest(request));
             model.addAttribute("LoggedUser", user);
+            model.addAttribute("imagePath", pictureService.getLoggedUserImagePathWithRequest(request));
             return "/user/home";
         }
     }

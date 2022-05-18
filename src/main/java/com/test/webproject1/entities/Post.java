@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data @NoArgsConstructor @AllArgsConstructor
@@ -16,10 +17,13 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Integer id;
 
-    @Column(name = "post_name", length = 50)
+    @Column(name = "post_name")
     private String postName;
 
-    @Column(name = "description", length = 500)
+    @Column(name = "date")
+    private LocalDate dateOfPost;
+
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
@@ -31,6 +35,13 @@ public class Post {
 
     @OneToOne(mappedBy = "post", orphanRemoval = true)
     private Address address;
+
+    public Post(String postName, LocalDate dateOfPost, String description, User user) {
+        this.postName = postName;
+        this.dateOfPost = dateOfPost;
+        this.description = description;
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;

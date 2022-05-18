@@ -1,14 +1,13 @@
-package com.test.webproject1.DAO;
+package com.test.webproject1.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
-public class UserDAO {
+public class UserDTO {
     private Long id;
     private String email;
     private String name;

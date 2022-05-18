@@ -15,18 +15,21 @@ import java.util.Optional;
 public class FileUsageHelper {
 
     @Value("${imagePathToProfile}")
-    private String uploadFolderPath;
+    private String uploadProfileImagesFolderPath;
+
+    @Value("${imagePathToPost}")
+    private String uploadPostImagesFolderPath;
 
     public void saveLocalPictureToImagesProfiles(Long user_id,MultipartFile multipartFile) throws IOException {
         String filename = multipartFile.getOriginalFilename();
 
-        BufferedImage croppedImage = cropImageMax240To320(multipartFile);
+        BufferedImage croppedImage = cropImage(multipartFile, 240, 320);
         Optional<String> ext = Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1));
 
         String newFileNameWithId = user_id + "." + ext.get() ;
-        String fullPath = uploadFolderPath + newFileNameWithId;
+        String fullPath = uploadProfileImagesFolderPath + newFileNameWithId;
 
 
         File outputFile = new File(fullPath);
@@ -34,12 +37,27 @@ public class FileUsageHelper {
         //Files.copy(multipartFile.getInputStream(), path.resolve(fileNameWithId));
     }
 
+    public void saveLocalPictureToImagesPosts(MultipartFile multipartFile, String fileName, String ext) throws IOException {
+        BufferedImage croppedImage = cropImage(multipartFile, 640, 480);
+
+        String fullPath = uploadPostImagesFolderPath + fileName;
+        File outputFile = new File(fullPath);
+        ImageIO.write(croppedImage, ext, outputFile);
+    }
+
     public void deleteLocalImageFromProfiles(String fileName){
-        File file = new File(uploadFolderPath + fileName);
+        File file = new File(uploadProfileImagesFolderPath + fileName);
         file.delete();
     }
 
-    public BufferedImage cropImageMax240To320(MultipartFile imageFile) throws IOException {
+    public void deleteLocalImageFromPosts(String filename){
+        File file = new File(uploadPostImagesFolderPath + filename);
+        file.delete();
+    }
+
+
+
+    public BufferedImage cropImage(MultipartFile imageFile, int neededWight, int neededHeight) throws IOException {
 
         InputStream in = new ByteArrayInputStream(imageFile.getBytes());
         BufferedImage originalImage = ImageIO.read(in);
@@ -50,28 +68,27 @@ public class FileUsageHelper {
         int width = originalImage.getWidth();
 
 
-
-        if (height <= 320 && width <= 240){
+        if (height <= neededHeight && width <= neededWight){
             return originalImage;
         } else {
-            if (height > 320 && width <=240){
-                int centeredUpperLeftCornerYThenWidthNormal = (height - 320)/2;
+            if (height > neededHeight && width <=neededWight){
+                int centeredUpperLeftCornerYThenWidthNormal = (height - neededHeight)/2;
                 BufferedImage croppedImage = originalImage.getSubimage(0,
-                        centeredUpperLeftCornerYThenWidthNormal, width, 320);
+                        centeredUpperLeftCornerYThenWidthNormal, width, neededHeight);
                 return croppedImage;
             }
 
-            if (height <=320 && width > 240){
-                int centeredUpperLeftCornerXThenHeightNormal = (width - 240)/2;
+            if (height <=neededHeight && width > neededWight){
+                int centeredUpperLeftCornerXThenHeightNormal = (width - neededWight)/2;
                 BufferedImage croppedImage = originalImage.getSubimage(centeredUpperLeftCornerXThenHeightNormal,
-                        0, 240, height);
+                        0, neededWight, height);
                 return croppedImage;
             }
 
-            int centeredUpperLeftCornerX = (width - 240)/2;
-            int centeredUpperLeftCornerY = (height - 320)/2;
+            int centeredUpperLeftCornerX = (width - neededWight)/2;
+            int centeredUpperLeftCornerY = (height - neededHeight)/2;
             BufferedImage croppedImage = originalImage.getSubimage(centeredUpperLeftCornerX,
-                    centeredUpperLeftCornerY, 240, 320);
+                    centeredUpperLeftCornerY, neededWight, neededHeight);
 
             return croppedImage;
         }

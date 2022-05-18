@@ -46,7 +46,7 @@
           <div class="main-page">
               <div class="form">
                   <form class="login-form" method="get" action="/user/home/change" th:object="${LoggedUser}">
-                      <h3>Страница пользователя</h3>
+                      <h3>User page</h3>
                       <img th:src="${imagePath}" />
                       <p><strong>Id: </strong><a th:text="${LoggedUser.getId()}"></a></p>
                       <p><strong>Email: </strong><a th:text="${LoggedUser.getEmail()}"></a></p>
@@ -54,8 +54,9 @@
                       <p><strong>Phone Number: </strong><a th:text="${LoggedUser.getPhoneNumber()}"></a></p>
                       <p><strong>Date of Registration: </strong><a th:text="${LoggedUser.getDateOfRegistration()}"></a></p>
                       <p><strong>Account activated: </strong><a th:text="${LoggedUser.getActive()}"></a></p>
-                      <button type="submit">Изменить данные</button>
+                      <button type="submit">Change profile</button>
                   </form>
+                  <br>
                   <form class="login-form" method="post" action="/user/logout">
                       <button type="submit">Sing out</button>
                   </form>
