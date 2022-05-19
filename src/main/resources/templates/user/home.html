@@ -1,22 +1,21 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" />
   <head>
   	<title>Home</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
 		
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
 		
 		<div class="wrapper d-flex align-items-stretch">
 			<nav id="sidebar">
 				<div class="custom-menu">
-					<button type="button" id="sidebarCollapse" class="btn btn-primary">
-	        </button>
+					<button type="button" id="sidebarCollapse" class="btn btn-primary"></button>
         </div>
                 <div class="img bg-wrap text-center py-4">
                     <div class="user-logo">
@@ -26,13 +25,22 @@
                 </div>
 
         <ul class="list-unstyled components mb-5">
-          <li class="active">
-            <a href="/user/home"></span>Home</a>
-          </li>
             <li class="active">
-                <a href="/user/getAll"></span>All Users</a>
+                <a href="/user/home"></span>Home</a>
             </li>
-          <li>
+            <li class="active">
+                <a th:href="@{/user/{userId}/posts(userId=${LoggedUser.getId()})}"></span>My posts</a>
+            </li>
+            <li class="active">
+                <a href="/post/new"></span>Create post</a>
+            </li>
+            <li class="active">
+                <a href="/post/getAll"></span>All posts</a>
+            </li>
+            <li class="active">
+                <a href="/user/getAll"></span>All users</a>
+            </li>
+            <li>
               <form class="inline" method="post" action="/user/logout">
                   <button type="submit" class="link-button"><a style="color: #ffffff99" >Sing out</a></button>
               </form>
@@ -56,7 +64,7 @@
                       <p><strong>Account activated: </strong><a th:text="${LoggedUser.getActive()}"></a></p>
                       <button type="submit">Change profile</button>
                   </form>
-                  <br>
+                  <br />
                   <form class="login-form" method="post" action="/user/logout">
                       <button type="submit">Sing out</button>
                   </form>

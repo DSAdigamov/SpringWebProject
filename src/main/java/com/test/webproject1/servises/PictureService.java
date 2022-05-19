@@ -81,6 +81,7 @@ public class PictureService {
             return "/nullUserImage.png";
     }
 
+
     public ArrayList<PictureDTO> getPostPictures(int id){
         List<Picture> images = pictureRepository.findAllByPostId(id);
         ArrayList<PictureDTO> newImagesDTO = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.test.webproject1.entities.User;
 import com.test.webproject1.helpers.CookiesHelper;
 import com.test.webproject1.helpers.FileUsageHelper;
 import com.test.webproject1.servises.PictureService;
+import com.test.webproject1.servises.PostService;
 import com.test.webproject1.servises.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,7 @@ public class UserPageController {
     private UserServiceImpl userService;
     private FileUsageHelper fileUploadService;
     private PictureService pictureService;
+    private PostService postService;
 
     private CookiesHelper cookiesHelper;
 
@@ -56,6 +58,17 @@ public class UserPageController {
             model.addAttribute("imagePath", pictureService.getUserImagePathById(Long.parseLong(id)));
             return "/user/userPage";
         }
+    }
+
+    @GetMapping("/{id}/posts")
+    public String getUsersPostsPage(@PathVariable String id, Model model, HttpServletRequest request){
+        User user = userService.getUserWithRequest(request);
+        model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
+        model.addAttribute("LoggedUser", user);
+
+        model.addAttribute("PostsList", postService.getAllPostsByUserId(Long.parseLong(id)));
+
+        return "/post/postGetAll";
     }
 
     @GetMapping("/home")

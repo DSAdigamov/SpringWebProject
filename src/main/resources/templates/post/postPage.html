@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title th:text="${postData.getPostName()}"></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -30,7 +30,16 @@
                 <a href="/user/home"></span>Home</a>
             </li>
             <li class="active">
-                <a href="/user/getAll"></span>All Users</a>
+                <a th:href="@{/user/{userId}/posts(userId=${LoggedUser.getId()})}"></span>My posts</a>
+            </li>
+            <li class="active">
+                <a href="/post/new"></span>Create post</a>
+            </li>
+            <li class="active">
+                <a href="/post/getAll"></span>All posts</a>
+            </li>
+            <li class="active">
+                <a href="/user/getAll"></span>All users</a>
             </li>
             <li>
                 <form class="inline" method="post" action="/user/logout">
@@ -43,37 +52,98 @@
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-        <div class="container">
-            <div class="row d-flex justify-content-center mt-5">
-                <div class="col-md-6">
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel" align="center">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active"> <img src="https://i.imgur.com/bV1xmG5.jpg" class="rounded"> </div>
-                            <div class="carousel-item"> <img src="https://i.imgur.com/vgMi4nw.jpg" class="rounded"> </div>
-                            <div class="carousel-item"> <img src="https://i.imgur.com/hRlGe10.jpg" class="rounded"> </div>
-                            <div class="carousel-item"> <img src="https://i.imgur.com/hRlGe10.jpg" class="rounded"> </div>
-                            <div class="carousel-item"> <img src="https://i.imgur.com/hRlGe10.jpg" class="rounded"> </div>
-                            <div class="carousel-item"> <img src="https://i.imgur.com/hRlGe10.jpg" class="rounded"> </div>
+        <div class="container-fluid" style="margin-top: 100px">
+            <div class="row" style="margin-left: 3px">
+                <h1 class="display-4" th:text="${postData.getPostName()}"></h1>
+            </div>
+            <div class="row">
+                <div class="fixed" style="margin-right: 80px; margin-bottom: 50px">
 
+                <div class="col-md-6">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" th:src="${imagesList.get(0).getPictureFullPath}">
+                            </div>
+                            <div class="carousel-item" th:each="image :${imagesList.subList(1, imagesList.size())}">
+                                <img class="d-block w-100" th:src="${image.getPictureFullPath()}">
+                            </div>
                         </div>
-                        <ol class="carousel-indicators list-inline">
-                            <li class="list-inline-item active"> <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel"> <img src="https://i.imgur.com/bV1xmG5.jpg" class="img-fluid rounded"> </a> </li>
-                            <li class="list-inline-item"> <a id="carousel-selector-1" data-slide-to="1" data-target="#myCarousel"> <img src="https://i.imgur.com/vgMi4nw.jpg" class="img-fluid rounded"> </a> </li>
-                            <li class="list-inline-item"> <a id="carousel-selector-2" data-slide-to="2" data-target="#myCarousel"> <img src="https://i.imgur.com/hRlGe10.jpg" class="img-fluid rounded"> </a> </li>
-                            <li class="list-inline-item"> <a id="carousel-selector-3" data-slide-to="3" data-target="#myCarousel"> <img src="https://i.imgur.com/hRlGe10.jpg" class="img-fluid rounded"> </a> </li>
-                            <li class="list-inline-item"> <a id="carousel-selector-4" data-slide-to="4" data-target="#myCarousel"> <img src="https://i.imgur.com/hRlGe10.jpg" class="img-fluid rounded"> </a> </li>
-                            <li class="list-inline-item"> <a id="carousel-selector-5" data-slide-to="5" data-target="#myCarousel"> <img src="https://i.imgur.com/hRlGe10.jpg" class="img-fluid rounded"> </a> </li>
-                        </ol>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
                 </div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="col-auto">
+                        <div class="form">
+                        <h3><a th:text="${postData.getUser().getName()}" th:href="@{/user/{userId}(userId=${postData.getUser().getId()})}"></a></h3>
+                        <img th:src="${postCreatorUserImage}" />
+                        <p><strong>Id: </strong><a th:text="${postData.getUser().getId()}"></a></p>
+                        <p><strong>Email: </strong><a th:text="${postData.getUser().getEmail()}"></a></p>
+                        <p><strong>Phone Number: </strong><a th:text="${postData.getUser().getPhoneNumber()}"></a></p>
+                        <p><strong>Date of Registration: </strong><a th:text="${postData.getUser().getDateOfRegistration()}"></a></p>
+                    </div>
+                </div>
+                </div>
+
             </div>
+            <div class="row">
+                <div class="col-auto" style="font-size: large">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="date" class="col-form-label">Date of publication</label>
+                            <p class="text-left" name="dateOfPost" id="date" th:text="${postData.getDateOfPost()}"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="city" class="col-form-label">City</label>
+                            <p class="text-left" name="city" id="city" th:text="${postData.getAddress().getCity()}"></p>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="fullAddress" class="col-form-label">Full Address</label>
+                            <p class="text-left" name="fullAddress" id="fullAddress" th:text="${postData.getAddress().getFullAddress()}"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="description" class="col-form-label">Description</label>
+                            <p class="text-justify"  name="description" id="description" th:text="${postData.getDescription()}"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            </div>
+            </div>
+
         </div>
-    </div>
+
+
+
 </div>
 
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+
 </body>
 </html>

@@ -1,4 +1,9 @@
 
+.fixed{
+  width: 640px;
+  height: 480px;
+}
+
 .form-controlPost {
   border: none;
   border: 1px solid #d9d9d9;
@@ -5277,7 +5282,10 @@ a.close.disabled {
   color: #212529; }
 
 .carousel {
-  position: relative; }
+  position: relative;
+  width: 640px;
+  height: 480px;
+}
 
 .carousel.pointer-event {
   -ms-touch-action: pan-y;

@@ -30,7 +30,16 @@
                 <a href="/user/home"></span>Home</a>
             </li>
             <li class="active">
-                <a href="/user/getAll"></span>All Users</a>
+                <a th:href="@{/user/{userId}/posts(userId=${LoggedUser.getId()})}"></span>My posts</a>
+            </li>
+            <li class="active">
+                <a href="/post/new"></span>Create post</a>
+            </li>
+            <li class="active">
+                <a href="/post/getAll"></span>All posts</a>
+            </li>
+            <li class="active">
+                <a href="/user/getAll"></span>All users</a>
             </li>
             <li>
                 <form class="inline" method="post" action="/user/logout">
@@ -68,8 +77,8 @@
             <br>
             <br>
 
-            <form method="get" action="/user/home">
-                <button type="submit" class="mfu-new-item-btn btn btn-primary">Back</button>
+            <form method="get" th:action="${redirectToPost}">
+                <button type="submit" class="mfu-new-item-btn btn btn-primary">Go to Post</button>
             </form>
             <br>
             <br>

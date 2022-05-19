@@ -44,13 +44,13 @@ public class CookiesHelper {
 
     public String getEmailFromCookie(HttpServletRequest request){
         Cookie authCookie = getAuthCookie(request);
-        String email = decodeHelper.getEmailFromAuthCookie(authCookie.getValue());
+        String email = decodeHelper.getEmailFromAuthCookieToken(authCookie.getValue());
         return email;
     }
 
     public String[] getRolesFromCookie(HttpServletRequest request){
         Cookie authCookie = getAuthCookie(request);
-        String[] roles = decodeHelper.getRolesFromAuthCookie(authCookie.getValue());
+        String[] roles = decodeHelper.getRolesFromAuthCookieToken(authCookie.getValue());
         return roles;
     }
 }

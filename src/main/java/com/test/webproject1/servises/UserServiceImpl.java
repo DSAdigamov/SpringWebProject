@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public void UpdateUserNameAndPhone(HttpServletRequest request,String name, String phone){
         Cookie authCookie = cookiesHelper.getAuthCookie(request);
-        String userEmail = decodeHelper.getEmailFromAuthCookie(authCookie.getValue());
+        String userEmail = decodeHelper.getEmailFromAuthCookieToken(authCookie.getValue());
 
         if (!name.equals("")){
             userRepository.setUserName(userEmail, name);

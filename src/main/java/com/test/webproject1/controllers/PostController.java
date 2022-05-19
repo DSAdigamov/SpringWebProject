@@ -2,6 +2,7 @@ package com.test.webproject1.controllers;
 
 
 import com.test.webproject1.DTO.PostDTO;
+import com.test.webproject1.DTO.PostDTOForAllView;
 import com.test.webproject1.entities.Post;
 import com.test.webproject1.entities.User;
 import com.test.webproject1.repositories.PictureRepository;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -59,7 +62,9 @@ public class PostController {
         User user = userService.getUserWithRequest(request);
         model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
         model.addAttribute("LoggedUser", user);
+
         model.addAttribute("postAction", "/post/" + id + "/imagesChange");
+        model.addAttribute("redirectToPost", "/post/" + id);
 
         if (!Objects.equals(postService.getPostCreatorId(Integer.parseInt(id)), user.getId())){
             response.sendError(403);
@@ -81,6 +86,32 @@ public class PostController {
 
     }
 
+    @GetMapping("/{id}")
+    public String getPost(@PathVariable String id, HttpServletRequest request, Model model){
+        User user = userService.getUserWithRequest(request);
+        model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
+        model.addAttribute("LoggedUser", user);
+
+        Post post =postRepository.getById(Integer.parseInt(id));
+        model.addAttribute("imagesList", pictureService.getPostPictures(Integer.parseInt(id)));
+        model.addAttribute("postCreatorUserImage", pictureService.getUserImagePathById(post.getUser().getId()));
+        model.addAttribute("postData", post);
+
+
+        return "/post/postPage";
+    }
+
+
+    @GetMapping("/allPosts")
+    public String getAllPosts(HttpServletRequest request, Model model){
+        User user = userService.getUserWithRequest(request);
+        model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
+        model.addAttribute("LoggedUser", user);
+
+        model.addAttribute("PostsList", postService.getAllPosts());
+
+        return "/post/postGetAll";
+    }
 
 
 }
