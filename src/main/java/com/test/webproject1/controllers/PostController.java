@@ -102,7 +102,7 @@ public class PostController {
     }
 
 
-    @GetMapping("/allPosts")
+    @GetMapping("/getAll")
     public String getAllPosts(HttpServletRequest request, Model model){
         User user = userService.getUserWithRequest(request);
         model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));

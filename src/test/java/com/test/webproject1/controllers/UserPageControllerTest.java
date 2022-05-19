@@ -11,12 +11,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.servlet.http.Cookie;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@WithUserDetails("111@mail.ru")
 class UserPageControllerTest {
 
     @Autowired
@@ -28,9 +30,10 @@ class UserPageControllerTest {
     @Disabled
     @Test
     public void userPageTest() throws Exception {
-        this.mockMvc.perform(get("/user/home"))
-                .andExpect(SecurityMockMvcResultMatchers.authenticated())
-                .andExpect(MockMvcResultMatchers.xpath("//*[@id=\"sidebar\"]/div[2]/div/h2").string("петя"));
+        Cookie cookie = new Cookie("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTFAbWFpbC5ydSIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiL2xvZ2luIiwiZXhwIjoxNjUzMTYxNDA1fQ.FrvzA8yoGfoJoelQakoa1h1_M_BNNVQbO5vvDSjoeIQ");
+        this.mockMvc.perform(get("/user/home").cookie(cookie))
+                .andExpect(status().isOk());
+                //.andExpect(MockMvcResultMatchers.xpath("//*[@id=\"sidebar\"]/div[2]/div/h2").string("петя"));
     }
 
 }
