@@ -76,7 +76,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/imagesChange")
-    public String uploadImageForPostPage(@PathVariable String id,@RequestParam("image") MultipartFile imageFile) throws IOException {
+    public String getUploadImageForPostPage(@PathVariable String id,@RequestParam("image") MultipartFile imageFile) throws IOException {
         if (imageFile.isEmpty()){
             return "redirect:/post/" + id + "/imagesChange";
         } else {
@@ -88,18 +88,49 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String getPost(@PathVariable String id, HttpServletRequest request, Model model){
-        User user = userService.getUserWithRequest(request);
+        User loggedUser = userService.getUserWithRequest(request);
         model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
-        model.addAttribute("LoggedUser", user);
+        model.addAttribute("LoggedUser", loggedUser);
 
         Post post =postRepository.getById(Integer.parseInt(id));
         model.addAttribute("imagesList", pictureService.getPostPictures(Integer.parseInt(id)));
         model.addAttribute("postCreatorUserImage", pictureService.getUserImagePathById(post.getUser().getId()));
         model.addAttribute("postData", post);
 
+        if (!post.getUser().getId().equals(loggedUser.getId())){
+            model.addAttribute("isUserCreator", "visibility: hidden");
+        }
+        else model.addAttribute("isUserCreator", "visibility: visible");
+
 
         return "/post/postPage";
     }
+
+    @GetMapping("/{id}/infoChange")
+    public String getUpdateInfoPage(@PathVariable String id, HttpServletRequest request, HttpServletResponse response ,Model model) throws IOException {
+        User loggedUser = userService.getUserWithRequest(request);
+        model.addAttribute("imageSidebarPath", pictureService.getLoggedUserImagePathWithRequestForSidebar(request));
+        model.addAttribute("LoggedUser", loggedUser);
+
+        if (!Objects.equals(postService.getPostCreatorId(Integer.parseInt(id)), loggedUser.getId())){
+            response.sendError(403);
+            return "redirect:/error";
+        }
+
+        Post post =postRepository.getById(Integer.parseInt(id));
+        model.addAttribute("postData", post);
+        model.addAttribute("PostDAO", new PostDTO());
+
+        return "/post/postChangeInfoPage";
+    }
+
+    @PostMapping("/{id}/infoChange")
+    public String updatePostInfo(@ModelAttribute PostDTO postData, @PathVariable String id) throws IOException {
+        System.out.println(postData.toString());
+        postService.changePostInfoById(Integer.parseInt(id), postData.getPostName(), postData.getCity(), postData.getFullAddress(), postData.getDescription());
+        return "redirect:/post/" + id;
+    }
+
 
 
     @GetMapping("/getAll")

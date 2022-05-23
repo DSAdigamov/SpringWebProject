@@ -55,28 +55,22 @@
     <div id="content" class="p-4 p-md-5 pt-5">
         <div class="container" style="margin-top: 100px; background: gainsboro">
 
-            <form method="post" action="/post/new" th:object="${newPostDAO}" enctype="multipart/form-data">
+            <form method="post" th:action="@{/post/{postId}/infoChange(postId=${postData.getId()})}" th:object="${PostDAO}" enctype="multipart/form-data">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 mr-auto">
-                        <h2>Select main image</h2>
-                        <img th:src="@{/nullPostImage.png}">
-                        <input type="file" name="mainImage" accept="image/png, image/jpeg, image/jpg" />
-                    </div>
-
                     <div class="col-md-6">
 
                         <div class="row">
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ">
                                 <label for="postName" class="col-form-label">Post name</label>
-                                <input class="form-control bg-primary" type="text" name="postName" id="postName" placeholder="Post Name">
+                                <input type="text" class="form-control bg-primary" name="postName" id="postName" th:placeholder="${postData.getPostName()}">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="city" class="col-form-label">City</label>
-                                <input type="text" class="form-control bg-primary" name="city" id="city" placeholder="City">
+                                <input type="text" class="form-control bg-primary" name="city" id="city" th:placeholder="${postData.getAddress().getCity()}">
                             </div>
                         </div>
 
@@ -84,19 +78,19 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="fullAddress" class="col-form-label">Full Address</label>
-                                <input type="text" class="form-control bg-primary" name="fullAddress" id="fullAddress" placeholder="Full address">
+                                <input type="text" class="form-control bg-primary" name="fullAddress" id="fullAddress" th:placeholder="${postData.getAddress().getFullAddress()}">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="description" class="col-form-label">Description</label>
-                                <textarea style="height: 100px" class="form-control input-group-lg bg-primary"  name="description" id="description" rows="10" placeholder="Description"></textarea>
+                                <textarea style="height: 100px" class="form-control input-group-lg bg-primary"  name="description" id="description" rows="10" th:placeholder="${postData.getDescription()}"></textarea>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <input type="submit" value="Create Post" class="btn btn-primary rounded-0 py-2 px-4">
+                                <input type="submit" value="Update Info" class="btn btn-primary rounded-0 py-2 px-4">
                             </div>
                         </div>
              </form>

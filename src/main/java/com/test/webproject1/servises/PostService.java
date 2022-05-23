@@ -65,4 +65,19 @@ public class PostService {
         }
         return postDTOForAllViewList;
     }
+
+    public void changePostInfoById(int id, String postName, String city, String fullAddress, String description){
+
+        if (!postName.equals(""))
+            postRepository.setPostName(id, postName);
+
+        if (!city.equals(""))
+            addressRepository.setCityById(id, city);
+
+        if (!fullAddress.equals(""))
+            addressRepository.setFullAddressById(id,fullAddress);
+
+        if (!description.equals(""))
+            postRepository.setPostDescription(id, description);
+    }
 }
